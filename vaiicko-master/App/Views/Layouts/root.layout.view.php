@@ -25,12 +25,12 @@
 <body>
 <nav class="navbar navbar-expand-sm bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="<?= $link->url('home.index') ?>">
+        <a class="navbar-brand" href="<?= $link->url('about.index') ?>">
             <img src="<?= $link->asset('images/vaiicko_logo.png') ?>" title="<?= App\Configuration::APP_NAME ?>" alt="Framework Logo">
         </a>
         <ul class="navbar-nav me-auto">
             <li class="nav-item">
-                <a class="nav-link" href="<?= $link->url('home.contact') ?>">Contact</a>
+                <a class="nav-link" href="<?= $link->url('about.contact') ?>">Contact</a>
             </li>
         </ul>
         <?php if ($auth?->isLogged()) { ?>
