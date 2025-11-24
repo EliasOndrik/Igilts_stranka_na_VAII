@@ -23,30 +23,64 @@
     <script src="<?= $link->asset('js/script.js') ?>"></script>
 </head>
 <body>
-<nav class="navbar navbar-expand-sm bg-light">
+<nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="<?= $link->url('about.index') ?>">
-            <img src="<?= $link->asset('images/vaiicko_logo.png') ?>" title="<?= App\Configuration::APP_NAME ?>" alt="Framework Logo">
+        <a class="navbar-brand" href="<?= $link->url('home.index') ?>">
+            <img src="<?= $link->asset('images/logo.jpg') ?>" title="<?= App\Configuration::APP_NAME ?>" alt="Logo">
         </a>
-        <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="<?= $link->url('about.contact') ?>">Contact</a>
-            </li>
-        </ul>
-        <?php if ($auth?->isLogged()) { ?>
-            <span class="navbar-text">Logged in user: <b><?= $auth?->user?->name ?></b></span>
-            <ul class="navbar-nav ms-auto">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="<?= $link->url('auth.logout') ?>">Log out</a>
+                    <a class="nav-link" href="<?= $link->url('home.contact') ?>">Map</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="<?= $link->url('home.index') ?>">Settings</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        About
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="<?= $link->url('about.index') ?>">Framework</a></li>
+                        <li><a class="dropdown-item" href="<?= $link->url('about.contact') ?>">Contact</a></li>
+                    </ul>
                 </li>
             </ul>
-        <?php } else { ?>
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= App\Configuration::LOGIN_URL ?>">Log in</a>
-                </li>
-            </ul>
-        <?php } ?>
+        </div>
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <?php if ($auth?->isLogged()) { ?>
+                <ul class="navbar-nav ms-auto">
+                    <li>
+                        <div class="navbar-text">Logged in user: <b><?= $auth?->user?->name ?></b></div>
+                    </li>
+                    <li>
+                        <h2>/</h2>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= $link->url('auth.logout') ?>">Log out</a>
+                    </li>
+                </ul>
+            <?php } else { ?>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= App\Configuration::LOGIN_URL ?>">Log in</a>
+                    </li>
+                    <li>
+                        <h2>/</h2>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= App\Configuration::LOGIN_URL ?>">Register</a>
+                    </li>
+                </ul>
+            <?php } ?>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
     </div>
 </nav>
 <div class="container-fluid mt-3">
