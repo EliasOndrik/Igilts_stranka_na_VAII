@@ -30,7 +30,7 @@ class DefaultConventions implements IDbConvention
     public function getTableName(string $className): string
     {
         $arr = explode("\\", $className); // Split the namespace to get the class name
-        return Inflect::pluralize(strtolower(end($arr))); // Pluralize and return the table name
+        return end($arr); // Pluralize and return the table name
     }
 
     /**
@@ -44,7 +44,7 @@ class DefaultConventions implements IDbConvention
      */
     public function getPkColumnName(string $className): string
     {
-        return 'id'; // Default primary key column name
+        return $className; // Default primary key column name
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Framework\Auth;
 
+use App\Models\Pouzivatelia;
 use Exception;
 use Framework\Core\App;
 use Framework\Core\IAuthenticator;
@@ -52,6 +53,13 @@ class DummyAuthenticator implements IAuthenticator
     public function login(string $username, string $password): bool
     {
         // Check if the provided login and password match the hardcoded credentials
+        $user = Pouzivatelia::getAll("prezivka = ?",[$username])[0] ?? null;
+        if ($username == $user->getPrezivka() && password_verify($password, $user->getHeslo())) {
+            $this->user = new User(id: null, username: $user->getPrezivka(), name: $user->getPrezivka());
+            // Store the entire User object in the session
+            $this->session->set('user', $this->user);
+            return true;
+        }
         if ($username == self::LOGIN && password_verify($password, self::PASSWORD_HASH)) {
             $this->user = new User(id: null, username: self::LOGIN, name: self::USERNAME);
             // Store the entire User object in the session

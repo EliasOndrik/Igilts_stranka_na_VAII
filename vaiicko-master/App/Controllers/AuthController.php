@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Configuration;
+use App\Models\Pouzivatelia;
 use Exception;
 use Framework\Core\BaseController;
 use Framework\Http\Request;
@@ -49,11 +50,35 @@ class AuthController extends BaseController
         if ($request->hasValue('submit')) {
             $logged = $this->app->getAuth()->login($request->value('username'), $request->value('password'));
             if ($logged) {
-                return $this->redirect($this->url("admin.index"));
+                return $this->redirect($this->url("home.index"));
             }
         }
 
         $message = $logged === false ? 'Bad username or password' : null;
+        return $this->html(compact("message"));
+    }
+
+    public function register(Request $request): Response
+    {
+        $logged = null;
+        if ($request->hasValue('submit')) {
+            if (strcmp($request->value('password'), $request->value('confirm_password')) !== 0) {
+                $message = 'Passwords do not match';
+                return $this->html(compact("message"));
+            }
+            $registerUser = new Pouzivatelia();
+            $registerUser->setPrezivka($request->value('username'));
+            $registerUser->setEmail($request->value('email'));
+            $registerUser->setHeslo(password_hash($request->value('password'), Configuration::PASSWORD_ALGO));
+            $registerUser->save();
+
+            $logged = $this->app->getAuth()->login($request->value('username'), $request->value('password'));
+            if ($logged) {
+                return $this->redirect($this->url("home.index"));
+            }
+        }
+
+        $message = $logged === false ? '' : null;
         return $this->html(compact("message"));
     }
 
@@ -68,6 +93,6 @@ class AuthController extends BaseController
     public function logout(Request $request): Response
     {
         $this->app->getAuth()->logout();
-        return $this->html();
+        return $this->redirect($this->url("home.index"));
     }
 }

@@ -19,7 +19,7 @@ class Configuration
     /**
      * Application name.
      */
-    public const APP_NAME = 'Vaííčko MVC FW';
+    public const APP_NAME = 'IGILTS';
 
     /**
      * Version of the framework.
@@ -38,6 +38,8 @@ class Configuration
      * URL for the login page. Users will be redirected here if authentication is required for an action.
      */
     public const LOGIN_URL = '?c=auth&a=login';
+    public const REGISTER_URL = '?c=auth&a=register';
+
 
     /**
      * Prefix for the default view files located in the App/Views directory. The view file format is
@@ -85,4 +87,7 @@ class Configuration
      * Example: /uploads/
      */
     public const UPLOAD_URL = '/uploads/';
+
+    //Password ecryption algorithm
+    public const PASSWORD_ALGO = PASSWORD_BCRYPT;
 }
