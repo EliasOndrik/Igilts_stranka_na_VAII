@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Hry;
 use Framework\Core\BaseController;
 use Framework\Http\Request;
 use Framework\Http\Responses\Response;
@@ -39,7 +40,8 @@ class HomeController extends BaseController
      */
     public function index(Request $request): Response
     {
-        return $this->html();
+        $games = Hry::getAll();
+        return $this->html(compact('games'));
     }
 
     /**
