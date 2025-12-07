@@ -31,11 +31,11 @@
         </a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= $link->url('home.contact') ?>">Map</a>
+                <li>
+                    <a class="nav-link" href="<?= $link->url('setting.account') ?>">My games</a>
                 </li>
                 <li>
-                    <a class="nav-link" href="<?= $link->url('home.index') ?>">Settings</a>
+                    <a class="nav-link" href="<?= $link->url('setting.index') ?>">Settings</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

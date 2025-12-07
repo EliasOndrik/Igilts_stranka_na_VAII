@@ -55,7 +55,7 @@ class DummyAuthenticator implements IAuthenticator
         // Check if the provided login and password match the hardcoded credentials
         $user = Pouzivatelia::getAll("prezivka = ?",[$username])[0] ?? null;
         if ($username == $user->getPrezivka() && password_verify($password, $user->getHeslo())) {
-            $this->user = new User(id: null, username: $user->getPrezivka(), name: $user->getPrezivka());
+            $this->user = new User(id: $user->getIDPouzivatel(), username: $user->getPrezivka(), name: $user->getPrezivka());
             // Store the entire User object in the session
             $this->session->set('user', $this->user);
             return true;

@@ -69,4 +69,9 @@ class Pouzivatelia extends Model
     {
         return self::getAll('email = ?', [$email])[0] !== null;
     }
+    public static function getObrazokPath(int $ID_pouzivatel): ?string
+    {
+        $pouzivatel = Pouzivatelia::getOne($ID_pouzivatel);
+        return $pouzivatel?->getObrazok();
+    }
 }

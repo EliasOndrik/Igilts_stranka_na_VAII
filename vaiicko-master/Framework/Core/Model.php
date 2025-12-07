@@ -63,7 +63,7 @@ abstract class Model implements \JsonSerializable
         if (!empty(static::$primaryKey)) {
             return static::$primaryKey;
         }
-        return self::getConventions()->getPkColumnName(get_called_class());
+        return static::getDbColumns()[0];
     }
 
     /**
