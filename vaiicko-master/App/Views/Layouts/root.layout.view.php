@@ -23,8 +23,8 @@
     <link rel="stylesheet" href="<?= $link->asset('css/styl.css') ?>">
     <script src="<?= $link->asset('js/script.js') ?>"></script>
 </head>
-<body>
-<nav class="navbar navbar-expand-lg bg-light">
+<body data-bs-theme="dark">
+<nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="<?= $link->url('home.index') ?>">
             <img src="<?= $link->asset('images/logo.jpg') ?>" title="<?= App\Configuration::APP_NAME ?>" alt="Logo">

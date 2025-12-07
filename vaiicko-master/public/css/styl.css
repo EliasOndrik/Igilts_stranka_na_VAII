@@ -15,3 +15,22 @@ iframe {
 .profile {
     aspect-ratio: 1/1;
 }
+body {
+    background-color: #5f2f45;
+}
+.card {
+    background-color: #5f2f45;
+    border-color: #fabb64;
+    color: #f5ddbc;
+}
+.card a {
+    color: #f5ddbc;
+    text-decoration: none;
+}
+.card a:hover {
+    color: #fabb64;
+    text-decoration: none;
+}
+h2, h1{
+    color: #f5ddbc;
+}
