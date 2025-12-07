@@ -12,7 +12,7 @@ class Hry extends Model
     protected ?string $Autor = "Neznámy";
     protected ?int $Hodnotenie;
     protected ?string $Popis;
-    protected ?string $Obrazok;
+    protected ?string $Obrazok = "";
     protected ?string $Datum_pridania;
     protected ?string $Link;
 

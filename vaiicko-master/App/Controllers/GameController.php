@@ -39,27 +39,63 @@ class GameController extends BaseController
     }
     public function edit(Request $request): Response
     {
+        if($request->hasValue('id')){
+            $game = Hry::getOne($request->value('id'));
+            if(is_null($game)){
+                throw new HttpException(404, "Hra neexistuje");
+            }
+            return $this->html(compact('game'));
+
+        }
         return $this->html();
     }
     public function delete(Request $request): Response
     {
-        return $this->html();
+        if($request->hasValue('id')){
+            $game = Hry::getOne($request->value('id'));
+            if(is_null($game)){
+                throw new HttpException(404, "Hra neexistuje");
+            }
+            if ($game->getIDNahravac() != $this->app->getAuth()->getUser()->getId()){
+                throw new HttpException(403, "Nemáte oprávnenie na zmazanie tejto hry");
+            }
+            $komentare = Komentare::getAll('ID_hra = ?', [$game->getIDHra()]);
+            foreach ($komentare as $komentar){
+                $komentar->delete();
+            }
+            $game->delete();
+        }
+        return $this->redirect($this->url("game.index"));
     }
     public function save(Request $request): Response
     {
         if ($request->hasValue("submit")){
+
+            if ($request->value("id") > 0){
+                $game = Hry::getOne($request->value("id"));
+                if(is_null($game)){
+                    throw new HttpException(404, "Hra neexistuje");
+                }
+                if ($game->getIDNahravac() != $this->app->getAuth()->getUser()->getId()){
+                    throw new HttpException(403, "Nemáte oprávnenie na úpravu tejto hry");
+                }
+
+            }
+            else {
+                $game = new Hry();
+                $game->setDatumPridania(date("Y-m-d H:i:s", time()));
+                $game->setIDNahravac($this->app->getAuth()->getUser()->getId());
+
+            }
             $nazov = $request->value("name");
             $autor = $request->value("author");
             $popis = $request->value("popis");
             $link = $request->value("link");
-            $game = new Hry();
             $game->setNazov($nazov);
             $game->setAutor($autor);
             $game->setPopis($popis);
             $game->setLink($link);
-            $game->setDatumPridania(date("Y-m-d H:i:s", time()));
             $game->setHodnotenie(10);
-            $game->setIDNahravac($this->app->getAuth()->getUser()->getId());
 
             if (!is_dir(Configuration::UPLOAD_DIR)) {
                 if (!@mkdir(Configuration::UPLOAD_DIR, 0777, true) && !is_dir(Configuration::UPLOAD_DIR)) {
@@ -67,23 +103,24 @@ class GameController extends BaseController
                 }
             }
             $oldFileName = $game->getObrazok();
-            // Remove old file if present
-            if ($oldFileName != "") {
-                $oldPath = Configuration::UPLOAD_DIR . $oldFileName;
-                if (is_file($oldPath)) {
-                    @unlink($oldPath);
+            $newFile = $request->file('picture');
+            if ($newFile->getError() != UPLOAD_ERR_NO_FILE){
+                if ($oldFileName != "") {
+                    $oldPath = Configuration::UPLOAD_DIR . $oldFileName;
+                    if (is_file($oldPath)) {
+                        @unlink($oldPath);
+                    }
+                }
+                $uniqueName = time() . '-' . $newFile->getName();
+                $targetPath = Configuration::UPLOAD_DIR . $uniqueName;
+
+                if (!$newFile->store($targetPath)) {
+                    throw new HttpException(500, 'Chyba pri ukladaní súboru.');
                 }
             }
-
-            // Generate unique file name and store uploaded file
-            $newFile = $request->file('picture');
-            $uniqueName = time() . '-' . $newFile->getName();
-            $targetPath = Configuration::UPLOAD_DIR . $uniqueName;
-
-            if (!$newFile->store($targetPath)) {
-                throw new HttpException(500, 'Chyba pri ukladaní súboru.');
+            else{
+                $uniqueName = $oldFileName;
             }
-
             $game->setObrazok($uniqueName);
             $game->save();
         }

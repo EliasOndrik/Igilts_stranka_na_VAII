@@ -53,7 +53,7 @@ class SettingController extends BaseController
             }
 
             $oldPath = Configuration::UPLOAD_DIR . $user->getObrazok();
-            if (is_file($oldPath)) {
+            if (is_file($oldPath) && strcmp($user->getObrazok(), "defualt.png") !== 0) {
                 @unlink($oldPath);
             }
             // Generate unique file name and store uploaded file

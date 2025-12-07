@@ -10,7 +10,7 @@ use App\Models\Pouzivatelia;
 ?>
 <div class="container mt-4">
     <div class="row">
-        <iframe src="<?=@$game?->getLink() ?>"  allow="autoplay; fullscreen *; geolocation; microphone; camera; midi; monetization; xr-spatial-tracking; gamepad; gyroscope; accelerometer; xr; cross-origin-isolated; web-share" id="game_drop" allowtransparency="true"></iframe>
+        <iframe src="<?=@$game?->getLink() ?>" msallowfullscreen="true" allow="autoplay; fullscreen *; geolocation; microphone; camera; midi; monetization; xr-spatial-tracking; gamepad; gyroscope; accelerometer; xr; cross-origin-isolated; web-share" id="game_drop" allowtransparency="true" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true" scrolling="no" frameborder="0"></iframe>
     </div>
     <div class="row mt-4">
         <?php if($this->app->getAuth()->getUser() != null && @$game->getIDNahravac() == $this->app->getAuth()->getUser()->getId()): ?>
