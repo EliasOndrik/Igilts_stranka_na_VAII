@@ -10,7 +10,7 @@ use App\Models\Pouzivatelia;
 <div class="container">
     <div class="row">
         <div class="col-2">
-            <img src="<?= $link->asset(Configuration::UPLOAD_URL . Pouzivatelia::getObrazokPath($auth->getUser()->getId())) ?>" alt="Profilový obrázok" width="100%">
+            <img class="profile" src="<?= $link->asset(Configuration::UPLOAD_URL . Pouzivatelia::getObrazokPath($auth->getUser()->getId())) ?>" alt="Profilový obrázok" width="100%">
             <div class="text-center text-danger mb-3">
                 <?= @$message ?>
             </div>

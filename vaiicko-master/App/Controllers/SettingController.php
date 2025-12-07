@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Configuration;
+use App\Models\Hry;
+use App\Models\Komentare;
 use App\Models\Pouzivatelia;
 use Framework\Core\BaseController;
 use Framework\Http\HttpException;
@@ -71,6 +73,14 @@ class SettingController extends BaseController
             $oldPath = Configuration::UPLOAD_DIR . $user->getObrazok();
             if (is_file($oldPath)) {
                 @unlink($oldPath);
+            }
+            $komentare = Komentare::getAll('ID_pouzivatel = ?', [$user->getIDPouzivatel()]);
+            foreach ($komentare as $komentar) {
+                $komentar->delete();
+            }
+            $hry = Hry::getAll('ID_nahravac = ?', [$user->getIDPouzivatel()]);
+            foreach ($hry as $hra) {
+                $hra->delete();
             }
             $user->delete();
 

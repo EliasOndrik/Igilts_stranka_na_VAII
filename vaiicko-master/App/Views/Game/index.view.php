@@ -1,13 +1,14 @@
 <?php
-
 /** @var \Framework\Support\LinkGenerator $link */
 /** @var App\Models\Hry[] $games */
 
 use App\Configuration;
 
 ?>
-
 <div class="container">
+    <div class="row mb-4 mt-4">
+        <a class="btn btn-primary" href="<?= $link->url('add')?>">Pridaj hru</a>
+    </div>
     <div class="row">
         <?php foreach ($games as $game): ?>
             <div class="col-lg-3 mb-4">
