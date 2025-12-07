@@ -32,14 +32,19 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto">
                 <li>
-                    <a class="nav-link" href="<?= $link->url('setting.account') ?>">My games</a>
+                    <a class="nav-link" href="<?= $link->url('home.index') ?>">Hry</a>
                 </li>
-                <li>
-                    <a class="nav-link" href="<?= $link->url('setting.index') ?>">Settings</a>
-                </li>
+                <?php if ($auth?->isLogged()) { ?>
+                    <li>
+                        <a class="nav-link" href="<?= $link->url('game.index') ?>">Moje hry</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="<?= $link->url('setting.index') ?>">Nastavenia</a>
+                    </li>
+                <?php } ?>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        About
+                        O nás
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="<?= $link->url('about.index') ?>">Framework</a></li>
