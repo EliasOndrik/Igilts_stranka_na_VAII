@@ -47,26 +47,92 @@ class AuthController extends BaseController
     public function login(Request $request): Response
     {
         $logged = null;
+        $message = null;
         if ($request->hasValue('submit')) {
+            if (Pouzivatelia::getCount("prezivka = ?", [$request->post('username')]) == 0) {
+                $message = 'Zla prezívka alebo heslo';
+                return $this->html(compact("message"));
+            }
             $logged = $this->app->getAuth()->login($request->value('username'), $request->value('password'));
             if ($logged) {
                 return $this->redirect($this->url("home.index"));
             }
         }
 
-        $message = $logged === false ? 'Bad username or password' : null;
+        $message = $logged === false ? 'Zla prezívka alebo heslo' : null;
         return $this->html(compact("message"));
     }
 
     public function register(Request $request): Response
     {
+        if ($request->isAjax()){
+            $jsonData = $request->json();
+            $warnings = [];
+            if(is_object($jsonData) && property_exists($jsonData, 'username')){
+                if(Pouzivatelia::getCount("prezivka = ?", [$jsonData->username]) > 0){
+                    $warnings[] = ("Prezívku už používa: " . $jsonData->username);
+                }
+                if (preg_match("/\s/",$jsonData->username)){
+                    $warnings[] = 'Neplatná prezívka';
+                }
+                return $this->json(json_encode($warnings));
+            }
+            if(is_object($jsonData) && property_exists($jsonData, 'email')){
+                if(Pouzivatelia::getCount("email = ?", [$jsonData->email]) > 0){
+                    $warnings[] = ("Email sa už používa");
+                }
+                if (!filter_var($jsonData->email, FILTER_VALIDATE_EMAIL)) {
+                    $warnings[] = 'Neplatný email';
+                }
+                return $this->json(json_encode($warnings));
+            }
+            if(is_object($jsonData) && property_exists($jsonData, 'password')){
+
+                if (strlen($jsonData->password) < 8) {
+                    $warnings[] = "Príliš krátke";
+                }
+                if (!preg_match("/\d/", $jsonData->password)) {
+                    $warnings[] = "Neobsahuje číslo";
+                }
+                if (!preg_match("/[A-Z]/", $jsonData->password)) {
+                    $warnings[] = "Neobsahuje veľké písmeno";
+                }
+                if (!preg_match("/[a-z]/", $jsonData->password)) {
+                    $warnings[] = "Neobsahuje malé písmeno";
+                }
+                if (!preg_match("/\W/", $jsonData->password)) {
+                    $warnings[] = "Neobsahuje špeciálny znak";
+                }
+                if (preg_match("/\s/", $jsonData->password)) {
+                    $warnings[] = "Obsahuje medzeru";
+                }
+                return $this->json(json_encode($warnings));
+            }
+        }
+
         $logged = null;
         if ($request->hasValue('submit')) {
-            if (strcmp($request->value('password'), $request->value('confirm_password')) !== 0) {
-                $message = 'Passwords do not match';
+            $registerUser = new Pouzivatelia();
+            if (Pouzivatelia::getCount("prezivka = ?", [$request->value('username')]) > 0) {
+                $message = 'Prezívka je už používaná';
                 return $this->html(compact("message"));
             }
-            $registerUser = new Pouzivatelia();
+            if (preg_match("/\s/",$request->value('username'))){
+                $message = 'Neplatná prezívka';
+                return $this->html(compact("message"));
+            }
+            if (Pouzivatelia::getCount("email = ?", [$request->value('email')]) > 0) {
+                $message = 'Email je už registrovaný';
+                return $this->html(compact("message"));
+            }
+            if (!filter_var($request->value('email'), FILTER_VALIDATE_EMAIL)) {
+                $message = 'Neplatný email';
+                return $this->html(compact("message"));
+            }
+            if (strcmp($request->value('password'), $request->value('confirm_password')) !== 0) {
+                $message = 'Heslá sa nezhodujú';
+                return $this->html(compact("message"));
+            }
             $registerUser->setPrezivka($request->value('username'));
             $registerUser->setEmail($request->value('email'));
             $registerUser->setHeslo(password_hash($request->value('password'), Configuration::PASSWORD_ALGO));
