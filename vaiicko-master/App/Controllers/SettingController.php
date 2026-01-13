@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Configuration;
+use App\Models\Admini;
 use App\Models\Hry;
 use App\Models\Komentare;
 use App\Models\Pouzivatelia;
@@ -20,7 +21,16 @@ class SettingController extends BaseController
         $message = null;
         if ($request->hasValue('submit')) {
             if ($request->hasValue('username')) {
+                if(Pouzivatelia::getCount("prezivka = ?", [$request->value('username')]) > 0 ){
+                    $message = "Prezívka je už obsadená.";
+                    return $this->html(compact("message"));
+                }
+
                 $newUsername = $request->value('username');
+                if (preg_match("/\s/", $newUsername) || strlen($newUsername) < 1) {
+                    $message = 'Neplatná prezívka';
+                    return $this->html(compact("message"));
+                }
                 $user->setPrezivka($newUsername);
                 $user->save();
                 $logged->setUsername($newUsername);
@@ -32,12 +42,12 @@ class SettingController extends BaseController
                 $confirmPassword = $request->value('confirmPassword');
 
                 if (!password_verify($currentPassword, $user->getHeslo())) {
-                    $message = "Current password is incorrect.";
+                    $message = "Súčasné heslo je zle.";
                     return $this->html(compact("message"));
                 }
 
                 if (strcmp($newPassword, $confirmPassword) !== 0) {
-                    $message = "New passwords do not match.";
+                    $message = "Nové heslá sa nezhodujú.";
                     return $this->html(compact("message"));
                 }
                 $user->setHeslo(password_hash($newPassword, Configuration::PASSWORD_ALGO));
@@ -46,6 +56,10 @@ class SettingController extends BaseController
 
         }
         if ($request->hasValue('imgChange')) {
+            if ($request->value("imgChange") === ""){
+                $message = "Nebol vybraný žiadny súbor.";
+                return $this->html(compact("message"));
+            }
             if (!is_dir(Configuration::UPLOAD_DIR)) {
                 if (!@mkdir(Configuration::UPLOAD_DIR, 0777, true) && !is_dir(Configuration::UPLOAD_DIR)) {
                     throw new HttpException(500, 'Nepodarilo sa vytvoriť adresár pre nahrávanie súborov.',);
@@ -71,8 +85,12 @@ class SettingController extends BaseController
         if ($request->hasValue('delete')) {
             $this->app->getAuth()->logout();
             $oldPath = Configuration::UPLOAD_DIR . $user->getObrazok();
-            if (is_file($oldPath)) {
+            if (is_file($oldPath) && strcmp( $user->getObrazok(),'defualt.png') !== 0 ) {
                 @unlink($oldPath);
+            }
+            $admin = Admini::getOne($user->getIDPouzivatel());
+            if ($admin !== null) {
+                $admin->delete();
             }
             $komentare = Komentare::getAll('ID_pouzivatel = ?', [$user->getIDPouzivatel()]);
             foreach ($komentare as $komentar) {

@@ -1,8 +1,6 @@
 import {AuthAPI} from "./AuthAPI.js";
 
-/**
- * Main chat class
- */
+
 class Register {
 
     /**
@@ -13,12 +11,14 @@ class Register {
     #authService;
     #register;
 
-    constructor() {
+    constructor(auth) {
 
-        this.#authService = new AuthAPI();
+        this.#authService = auth;
 
         this.#register = document.getElementById("register");
-
+        if (this.#register === null){
+            return;
+        }
         let user = this.#register.getElementsByTagName("input")[0];
         user.onkeyup = async () => {
             let exists = await this.#authService.usernameStatus(user.value);

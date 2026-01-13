@@ -48,7 +48,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="<?= $link->url('about.index') ?>">Framework</a></li>
-                        <li><a class="dropdown-item" href="<?= $link->url('about.contact') ?>">Contact</a></li>
+                        <li><a class="dropdown-item" href="<?= $link->url('about.contact') ?>">Kontact</a></li>
                     </ul>
                 </li>
             </ul>
@@ -67,19 +67,19 @@
                         <h2>/</h2>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= $link->url('auth.logout') ?>">Log out</a>
+                        <a class="nav-link" href="<?= $link->url('auth.logout') ?>">Odhlásiť sa</a>
                     </li>
                 </ul>
             <?php } else { ?>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= App\Configuration::LOGIN_URL ?>">Log in</a>
+                        <a class="nav-link" href="<?= App\Configuration::LOGIN_URL ?>">Prihlásiť sa</a>
                     </li>
                     <li>
                         <h2>/</h2>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= App\Configuration::REGISTER_URL ?>">Register</a>
+                        <a class="nav-link" href="<?= App\Configuration::REGISTER_URL ?>">Registrovať sa</a>
                     </li>
                 </ul>
             <?php } ?>

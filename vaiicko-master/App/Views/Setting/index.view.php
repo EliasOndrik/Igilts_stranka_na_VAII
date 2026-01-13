@@ -7,7 +7,7 @@ use App\Configuration;
 use App\Models\Pouzivatelia;
 
 ?>
-<div class="container">
+<div id="profile-settings" class="container">
     <div class="row">
         <div class="col-2">
             <img class="profile" src="<?= $link->asset(Configuration::UPLOAD_URL . Pouzivatelia::getObrazokPath($auth->getUser()->getId())) ?>" alt="Profilový obrázok" width="100%">
@@ -23,11 +23,14 @@ use App\Models\Pouzivatelia;
                     <div class="card mb-4">
                         <div class="card-header">Zmena používateľského mena</div>
                         <div class="card-body">
-                            <form action="<?= $link->url('index') ?>" method="post" class="row g-2 align-items-center">
+                            <form id="username-form" action="<?= $link->url('index') ?>" method="post" class="row g-2 align-items-center">
                                 <div class="col-md-8">
                                     <input type="text" class="form-control" id="username" name="username" placeholder="Nové používateľské meno" value="<?= $auth->getUser()->getUsername() ?>">
+                                    <div class="invalid-feedback">
+
+                                    </div>
                                 </div>
-                                <div class="col">
+                                <div class="col align-self-start">
                                     <button type="submit" class="btn btn-primary" name="submit">Premenovať</button>
                                 </div>
                             </form>
@@ -37,13 +40,16 @@ use App\Models\Pouzivatelia;
                     <div class="card mb-4">
                         <div class="card-header">Zmena hesla</div>
                         <div class="card-body">
-                            <form action="<?= $link->url('index') ?>" method="post" class="row g-2 align-items-center">
+                            <form id="password-form" action="<?= $link->url('index') ?>" method="post" class="row g-2 align-items-center">
                                 <div class="row">
                                     <div class="col-md-4 mb-2">
                                         <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="Aktuálne heslo">
                                     </div>
                                     <div class="col-md-4 mb-2">
-                                        <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Nové heslo">
+                                        <input type="password" class="form-control" id="password" name="newPassword" placeholder="Nové heslo">
+                                        <div class="invalid-feedback">
+
+                                        </div>
                                     </div>
                                     <div class="col-md-4 mb-2">
                                         <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Potvrďte nové heslo">
@@ -53,6 +59,7 @@ use App\Models\Pouzivatelia;
                                     <div class="col">
                                         <button type="submit" class="btn btn-warning" name="submit">Zmeniť heslo</button>
                                     </div>
+
                                 </div>
                             </form>
                         </div>
@@ -61,9 +68,9 @@ use App\Models\Pouzivatelia;
                     <div class="card mb-4">
                         <div class="card-header">Zmena profilového obrázka</div>
                         <div class="card-body">
-                            <form action="<?= $link->url('index') ?>" method="post" enctype="multipart/form-data" class="row g-2 align-items-center">
+                            <form id="image-form" action="<?= $link->url('index') ?>" method="post" enctype="multipart/form-data" class="row g-2 align-items-center">
                                 <div class="col-md-8">
-                                    <input type="file" class="form-control" id="avatar" name="avatar">
+                                    <input type="file" accept=".jpg,.gif,.png" class="form-control" id="avatar" name="avatar">
                                 </div>
                                 <div class="col">
                                     <button type="submit" class="btn btn-primary" name="imgChange">Zmeniť obrázok</button>

@@ -72,7 +72,7 @@ class AuthController extends BaseController
                 if(Pouzivatelia::getCount("prezivka = ?", [$jsonData->username]) > 0){
                     $warnings[] = ("Prezívku už používa: " . $jsonData->username);
                 }
-                if (preg_match("/\s/",$jsonData->username)){
+                if (preg_match("/\s/",$jsonData->username) || strlen($jsonData->username) < 1){
                     $warnings[] = 'Neplatná prezívka';
                 }
                 return $this->json(json_encode($warnings));
