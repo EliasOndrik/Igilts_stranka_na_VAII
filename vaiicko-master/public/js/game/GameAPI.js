@@ -20,6 +20,17 @@ class GameAPI extends DataService {
             null
         );
     }
+    async checkUrl(link) {
+        return await this.sendRequest(
+            "form",
+            "POST",
+            200,
+            {
+                link: link
+            },
+            null
+        );
+    }
 
 }
 export {GameAPI}

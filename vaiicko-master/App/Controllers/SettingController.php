@@ -7,6 +7,7 @@ use App\Models\Admini;
 use App\Models\Hry;
 use App\Models\Komentare;
 use App\Models\Pouzivatelia;
+use App\Models\ZanreHry;
 use Framework\Core\BaseController;
 use Framework\Http\HttpException;
 use Framework\Http\Request;
@@ -56,7 +57,7 @@ class SettingController extends BaseController
 
         }
         if ($request->hasValue('imgChange')) {
-            if ($request->value("imgChange") === ""){
+            if ($request->value("avatar") === ""){
                 $message = "Nebol vybraný žiadny súbor.";
                 return $this->html(compact("message"));
             }
@@ -67,7 +68,7 @@ class SettingController extends BaseController
             }
 
             $oldPath = Configuration::UPLOAD_DIR . $user->getObrazok();
-            if (is_file($oldPath) && strcmp($user->getObrazok(), "defualt.png") !== 0) {
+            if (is_file($oldPath) && strcmp($user->getObrazok(), "default.png") !== 0) {
                 @unlink($oldPath);
             }
             // Generate unique file name and store uploaded file
@@ -98,6 +99,12 @@ class SettingController extends BaseController
             }
             $hry = Hry::getAll('ID_nahravac = ?', [$user->getIDPouzivatel()]);
             foreach ($hry as $hra) {
+                $komentarHry = Komentare::getAll("ID_hra = ?", [$hra->getIDHra()]);
+                foreach ($komentarHry as $komentarHryItem) {
+                    $komentarHryItem->delete();
+                }
+                $zanreHry = ZanreHry::getAll("ID_hra = ?", [$hra->getIDHra()]);
+                $zanreHry[0]?->delete();
                 $hra->delete();
             }
             $user->delete();

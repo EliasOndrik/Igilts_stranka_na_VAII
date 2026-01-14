@@ -22,6 +22,16 @@ class GameChanges {
             }
 
         }
+        let link = document.getElementById("link");
+        link.onkeyup = async () => {
+            let url = await this.#gameService.checkUrl(link.value);
+            link.className = "form-control is-valid";
+            document.getElementById("submit-game").disabled = false;
+            if(JSON.parse(url) === false){
+                link.className = "form-control is-invalid";
+                document.getElementById("submit-game").disabled = true;
+            }
+        }
 
     }
     addZaner(zaner,id) {

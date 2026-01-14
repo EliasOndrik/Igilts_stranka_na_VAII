@@ -33,6 +33,14 @@ class GameController extends BaseController
 
                 return $this->json(json_encode($zanre));
             }
+
+            if (is_object($jsonData) && property_exists($jsonData, 'link')){
+                if (!preg_match("/^https:\/\/[a-z0-9.-]+\/.*(html|php|js|embed)(\?.*)?$/i",$jsonData->link) || filter_var($jsonData->link, FILTER_VALIDATE_URL) === false) {
+                    return $this->json(json_encode(false));
+                } else {
+                    return $this->json(json_encode(true));
+                }
+            }
         }
         return $this->html();
     }
@@ -80,6 +88,10 @@ class GameController extends BaseController
             foreach ($komentare as $komentar){
                 $komentar->delete();
             }
+            $stareZanre = ZanreHry::getAll("ID_hra = ?", [$game->getIDHra()]);
+            if ($stareZanre != null){
+                $stareZanre[0]->delete();
+            }
             $game->delete();
         }
         return $this->redirect($this->url("game.index"));
@@ -87,7 +99,10 @@ class GameController extends BaseController
     public function save(Request $request): Response
     {
         if ($request->hasValue("submit")){
-
+            $link = $request->value("link");
+            if (!preg_match("/^https:\/\/[a-z0-9.-]+\/.*(html|php|js|embed)(\?.*)?$/i",$link) || filter_var($link, FILTER_VALIDATE_URL) === false) {
+                return $this->redirect($this->url("game.add"));
+            }
             if ($request->value("id") > 0){
                 $game = Hry::getOne($request->value("id"));
                 if(is_null($game)){
@@ -108,14 +123,13 @@ class GameController extends BaseController
             $nazov = $request->value("name");
             $autor = $request->value("author");
             $popis = $request->value("popis");
-            $link = $request->value("link");
             $zanre = $request->value("genres");
 
-            if (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",$link)) {
 
-            }
             $game->setNazov($nazov);
-            $game->setAutor($autor);
+            if ($autor !== ""){
+                $game->setAutor($autor);
+            }
             $game->setPopis($popis);
             $game->setLink($link);
             $game->setLikes(0);
@@ -164,17 +178,18 @@ class GameController extends BaseController
     }
     public function comment(Request $request): Response
     {
+        $game = Hry::getOne($request->value('id'));
+        if(is_null($game)){
+            throw new HttpException(404, "Hra neexistuje");
+        }
         $logedUser = $this->app->getAuth()->getUser();
-            $comment = new Komentare();
-            $comment->setIDPouzivatel($logedUser->getId());
-            $comment->setIDHra($request->value("id"));
-            $comment->setPopis($request->value("text"));
-            $comment->setDatumPridania(date("Y-m-d H:i:s", time()));
-            $comment->save();
-            $game = Hry::getOne($request->value('id'));
-            if(is_null($game)){
-                throw new HttpException(404, "Hra neexistuje");
-            }
-            return $this->redirect($this->url('game.game',compact('game')));
+        $comment = new Komentare();
+        $comment->setIDPouzivatel($logedUser->getId());
+        $comment->setIDHra($request->value("id"));
+        $comment->setPopis($request->value("text"));
+        $comment->setDatumPridania(date("Y-m-d H:i:s", time()));
+        $comment->save();
+        $id = $game->getIDHra();
+        return $this->redirect($this->url('game.game',compact('id')));
     }
 }

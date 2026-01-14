@@ -56,22 +56,24 @@ use App\Models\Pouzivatelia;
                 <?php endif; ?>
             </div>
         </div>
-        <?php foreach (Komentare::getCommentsByGame(@$game->getIDHra()) as $comment): ?>
+        <?php foreach (array_reverse(Komentare::getCommentsByGame(@$game->getIDHra())) as $comment): ?>
         <?php $uploader = Pouzivatelia::getOne($comment->getIDPouzivatel()); ?>
-        <div class="row">
-            <div class="col-2 ">
-                <img src="<?= $link->asset(Configuration::UPLOAD_URL . $uploader->getObrazok()) ?>" class="img-fluid profile" alt="Avatar používateľa" width="100%">
-            </div>
-            <div class="col-10">
-                <div class="card mb-3">
-                    <div>
-                        <div class="card-header">
-                            <?= htmlspecialchars($uploader->getPrezivka()) ?>
+        <div class="col-12 border rounded mb-3 p-2">
+            <div class="row">
+                <div class="col-2 ">
+                    <img src="<?= $link->asset(Configuration::UPLOAD_URL . $uploader->getObrazok()) ?>" class="img-fluid profile" alt="Avatar používateľa" width="100%">
+                </div>
+                <div class="col-10">
+                    <div class="card">
+                        <div>
+                            <div class="card-header">
+                                <?= htmlspecialchars($uploader->getPrezivka()) ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text"><?= htmlspecialchars($comment->getPopis()) ?></p>
-                        <p class="card-text"><small class="text-muted">Pridané dňa: <?= $comment->getDatumPridania() ?></small></p>
+                        <div class="card-body">
+                            <p class="card-text"><?= htmlspecialchars($comment->getPopis()) ?></p>
+                            <p class="card-text"><small class="text-muted">Pridané dňa: <?= $comment->getDatumPridania() ?></small></p>
+                        </div>
                     </div>
                 </div>
             </div>

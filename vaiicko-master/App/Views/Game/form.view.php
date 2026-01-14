@@ -51,7 +51,7 @@ use App\Configuration;
                 <textarea class="form-control" id="popis" rows="3" name="popis" placeholder="Popis hry" required><?= @$game?->getPopis() ?></textarea>
             </div>
             <div class="text-center mb-3">
-                <button type="submit" class="btn btn-primary justify-content-center" name="submit">Ulož</button>
+                <button id="submit-game" type="submit" class="btn btn-primary justify-content-center" name="submit">Ulož</button>
             </div>
         </form>
     </div>
