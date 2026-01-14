@@ -4,11 +4,14 @@ namespace App\Controllers;
 
 use App\Configuration;
 use App\Models\Komentare;
+use App\Models\Zaner;
+use App\Models\ZanreHry;
 use Framework\Core\BaseController;
 use Framework\Http\HttpException;
 use Framework\Http\Request;
 use Framework\Http\Responses\Response;
 use App\Models\Hry;
+use mysql_xdevapi\Exception;
 
 class GameController extends BaseController
 {
@@ -20,6 +23,17 @@ class GameController extends BaseController
     }
     public function form(Request $request): Response
     {
+        if ($request->isAjax()){
+            $jsonData = $request->json();
+            if(is_object($jsonData) && property_exists($jsonData, 'zaner')){
+                if ($jsonData->zaner === ""){
+                    return $this->json(json_encode([]));
+                }
+                $zanre = Zaner::getAll("zaner LIKE ?",[$jsonData->zaner."%"]);
+
+                return $this->json(json_encode($zanre));
+            }
+        }
         return $this->html();
     }
     public function game(Request $request): Response
@@ -43,6 +57,9 @@ class GameController extends BaseController
             $game = Hry::getOne($request->value('id'));
             if(is_null($game)){
                 throw new HttpException(404, "Hra neexistuje");
+            }
+            if ($game->getIDNahravac() != $this->app->getAuth()->getUser()->getId()){
+                throw new HttpException(403, "Nemáte oprávnenie na úpravy tejto hry");
             }
             return $this->html(compact('game'));
 
@@ -81,6 +98,7 @@ class GameController extends BaseController
                 }
 
             }
+
             else {
                 $game = new Hry();
                 $game->setDatumPridania(date("Y-m-d H:i:s", time()));
@@ -91,11 +109,17 @@ class GameController extends BaseController
             $autor = $request->value("author");
             $popis = $request->value("popis");
             $link = $request->value("link");
+            $zanre = $request->value("genres");
+
+            if (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",$link)) {
+
+            }
             $game->setNazov($nazov);
             $game->setAutor($autor);
             $game->setPopis($popis);
             $game->setLink($link);
-            $game->setHodnotenie(10);
+            $game->setLikes(0);
+            $game->setHodnotenie(0);
 
             if (!is_dir(Configuration::UPLOAD_DIR)) {
                 if (!@mkdir(Configuration::UPLOAD_DIR, 0777, true) && !is_dir(Configuration::UPLOAD_DIR)) {
@@ -123,6 +147,18 @@ class GameController extends BaseController
             }
             $game->setObrazok($uniqueName);
             $game->save();
+            $game = Hry::getOne($game->getIDHra());
+            $stareZanre = ZanreHry::getAll("ID_hra = ?", [$game->getIDHra()]);
+            if ($stareZanre != null){
+                $stareZanre[0]->delete();
+            }
+            foreach ($zanre as $zaner){
+                $zanreHry = new ZanreHry();
+                $zanreHry->setIDHra($game->getIDHra());
+                $zanreHry->setIDZaner($zaner);
+                $zanreHry->save();
+            }
+
         }
         return $this->redirect($this->url("game.index"));
     }
@@ -140,7 +176,5 @@ class GameController extends BaseController
                 throw new HttpException(404, "Hra neexistuje");
             }
             return $this->redirect($this->url('game.game',compact('game')));
-
-
     }
 }

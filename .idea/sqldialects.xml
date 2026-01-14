@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/../DiagramStranky_2026-01-12T20_05_09.469Z.sql" dialect="MariaDB" />
+    <file url="file://$PROJECT_DIR$/vaiicko-master/docker/sql/DiagramStranky_2025-12-07T22_16_39.504Z.sql" dialect="MariaDB" />
+  </component>
+</project>

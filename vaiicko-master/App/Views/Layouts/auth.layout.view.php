@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="<?= $link->asset('css/styl.css') ?>">
     <script src="<?= $link->asset('js/script.js') ?>" type="module"></script>
 </head>
-<body>
+<body data-bs-theme="dark">
 <div class="container-fluid mt-3">
     <div class="web-content">
         <?= $contentHTML ?>

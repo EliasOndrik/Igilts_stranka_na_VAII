@@ -46,7 +46,7 @@ $view->setLayout('auth');
                             <input name="confirm_password" type="password" id="confirm_password" class="form-control"
                                    placeholder="Zopakuj heslo" required>
                         </div>
-                        <div class="text-center contaner-fluid">
+                        <div class="text-center container-fluid">
                             <a class="btn btn-danger" href="<?= $link->url("home.index")?>">Návrat</a>
                             <button id="register-button" class="btn btn-primary" type="submit" name="submit">Registrovať</button>
                         </div>

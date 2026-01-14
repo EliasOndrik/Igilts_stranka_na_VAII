@@ -2,5 +2,7 @@
 <project version="4">
   <component name="DataSourcePerFileMappings">
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/d1f22def-1202-4011-81ef-926a0c065084/console.sql" value="d1f22def-1202-4011-81ef-926a0c065084" />
+    <file url="file://$PROJECT_DIR$/../DiagramStranky_2026-01-12T20_05_09.469Z.sql" value="d1f22def-1202-4011-81ef-926a0c065084" />
+    <file url="file://$PROJECT_DIR$/vaiicko-master/docker/sql/DiagramStranky_2025-12-07T22_16_39.504Z.sql" value="d1f22def-1202-4011-81ef-926a0c065084" />
   </component>
 </project>

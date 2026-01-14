@@ -10,7 +10,8 @@ class Hry extends Model
     protected ?int $ID_nahravac;
     protected ?string $Nazov;
     protected ?string $Autor = "Neznámy";
-    protected ?int $Hodnotenie;
+    protected ?int $Likes = 0;
+    protected ?int $Hodnotenie = 0;
     protected ?string $Popis;
     protected ?string $Obrazok = "";
     protected ?string $Datum_pridania;
@@ -108,5 +109,25 @@ class Hry extends Model
     public static function getGameByUploader(int $uploaderId): ?array
     {
         return self::getAll('ID_nahravac = ?', [$uploaderId]);
+    }
+
+    public function getLikes(): ?int
+    {
+        return $this->Likes;
+    }
+
+    public function setLikes(?int $Likes): void
+    {
+        $this->Likes = $Likes;
+    }
+
+    public function getZanre(): ?array
+    {
+        $zanreHry = ZanreHry::getAll("ID_hra = ?", [$this->getIDHra()]);
+        $zanre = null;
+        foreach ($zanreHry as $zaner) {
+            $zanre[] = Zaner::getOne($zaner->getIDZaner());
+        }
+        return $zanre;
     }
 }

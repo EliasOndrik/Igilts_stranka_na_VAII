@@ -21,14 +21,24 @@ use App\Models\Pouzivatelia;
         <?php endif;
         ?>
     </div>
-    <div class="row  border border-secondary rounded p-3">
+    <div class="row  border border-secondary rounded py-2">
         <div class="col-md-4">
-            <img src="<?= $link->asset(Configuration::UPLOAD_URL . @$game?->getObrazok()) ?>" class="img-fluid" alt="Obrázok hry">
+            <img src="<?= $link->asset(Configuration::UPLOAD_URL . @$game?->getObrazok()) ?>" class="img-fluid" alt="Obrázok hry" width="100%">
         </div>
         <div class="col-md-8">
             <h2><?= @$game?->getNazov() ?></h2>
             <p><strong>Autor hry:</strong> <?= @$game?->getAutor() ?></p>
-            <p><?= htmlspecialchars(@$game?->getPopis()) ?></p>
+            <p><strong>Žánre: </strong>
+            <?php
+                $zanre = @$game?->getZanre();
+                if ($zanre != null){
+                    foreach ($zanre as $zaner){
+                        echo htmlspecialchars($zaner->getZaner()) . ", ";
+                    }
+                }
+            ?>
+            </p>
+            <p><strong>Popis: </strong> <br><?= htmlspecialchars(@$game?->getPopis()) ?></p>
         </div>
     </div>
     <div class="row ">
@@ -49,8 +59,8 @@ use App\Models\Pouzivatelia;
         <?php foreach (Komentare::getCommentsByGame(@$game->getIDHra()) as $comment): ?>
         <?php $uploader = Pouzivatelia::getOne($comment->getIDPouzivatel()); ?>
         <div class="row">
-            <div class="col-2">
-                <img src="<?= $link->asset(Configuration::UPLOAD_URL . $uploader->getObrazok()) ?>" class="img-fluid profile" alt="Avatar používateľa">
+            <div class="col-2 ">
+                <img src="<?= $link->asset(Configuration::UPLOAD_URL . $uploader->getObrazok()) ?>" class="img-fluid profile" alt="Avatar používateľa" width="100%">
             </div>
             <div class="col-10">
                 <div class="card mb-3">
