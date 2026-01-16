@@ -98,6 +98,7 @@ class GameController extends BaseController
     }
     public function save(Request $request): Response
     {
+        $game = null;
         if ($request->hasValue("submit")){
             $link = $request->value("link");
             if (!preg_match("/^https:\/\/[a-z0-9.-]+\/.*(html|php|js|embed)(\?.*)?$/i",$link) || filter_var($link, FILTER_VALIDATE_URL) === false) {
@@ -123,7 +124,7 @@ class GameController extends BaseController
             $nazov = $request->value("name");
             $autor = $request->value("author");
             $popis = $request->value("popis");
-            $zanre = $request->value("genres");
+            $zanre = array_unique( $request->value("genres"),SORT_NUMERIC);
 
 
             $game->setNazov($nazov);
@@ -174,7 +175,10 @@ class GameController extends BaseController
             }
 
         }
-        return $this->redirect($this->url("game.index"));
+        if ($game === null){
+            return $this->redirect($this->url("game.index"));
+        }
+        return $this->redirect($this->url("game.game",['id'=>$game->getIDHra()]));
     }
     public function comment(Request $request): Response
     {
