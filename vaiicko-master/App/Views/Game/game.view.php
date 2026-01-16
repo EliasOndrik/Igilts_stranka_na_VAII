@@ -9,6 +9,7 @@ use App\Models\Pouzivatelia;
 
 ?>
 <div class="container mt-4">
+    <input id="secret-id" type="hidden" value="<?= @$game?->getIDHra() ?>">
     <div class="row">
         <iframe src="<?=@$game?->getLink() ?>" msallowfullscreen="true" allow="autoplay; fullscreen *; geolocation; microphone; camera; midi; monetization; xr-spatial-tracking; gamepad; gyroscope; accelerometer; xr; cross-origin-isolated; web-share" id="game_drop" allowtransparency="true" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true" scrolling="no" frameborder="0"></iframe>
     </div>
@@ -39,6 +40,8 @@ use App\Models\Pouzivatelia;
             ?>
             </p>
             <p><strong>Popis: </strong> <br><?= htmlspecialchars(@$game?->getPopis()) ?></p>
+            <p>Túto hru majú radi: <strong id="hodnotenie"><?= @$game?->getHodnotenie()!=0 ? (int)(@$game?->getLikes()/@$game?->getHodnotenie() * 100):'Nan' ?> %</strong> <i id="like" class="btn btn-success bi bi-hand-thumbs-up mx-2"></i><i id="dislike" class="btn btn-danger bi bi-hand-thumbs-down mx-2"></i></p>
+
         </div>
     </div>
     <div class="row ">

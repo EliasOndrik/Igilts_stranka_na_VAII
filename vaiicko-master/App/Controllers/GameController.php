@@ -46,6 +46,21 @@ class GameController extends BaseController
     }
     public function game(Request $request): Response
     {
+        if($request->isAjax()){
+            $jsonData = $request->json();
+            if(is_object($jsonData) && property_exists($jsonData, 'value') && property_exists($jsonData, 'game')){
+                $currentGame = Hry::getOne($jsonData->game);
+                if ($jsonData->value === "like"){
+                    $currentGame->setHodnotenie($currentGame->getHodnotenie() + 1);
+                    $currentGame->setLikes($currentGame->getLikes() + 1);
+                } else {
+                    $currentGame->setHodnotenie($currentGame->getHodnotenie() + 1);
+                }
+                $currentGame->save();
+                return $this->json(json_encode($currentGame->getLikes()/$currentGame->getHodnotenie() * 100));
+            }
+        }
+
         if($request->hasValue('id')){
             $game = Hry::getOne($request->value('id'));
             if(is_null($game)){

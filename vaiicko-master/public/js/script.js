@@ -5,11 +5,13 @@ import {GameAPI} from "./game/GameAPI.js";
 import {GameChanges} from "./game/GameChanges.js";
 import {SearchAPI} from "./search/SearchAPI.js";
 import {SearchGames} from "./search/SearchGames.js";
+import {Hodnotenie} from "./game/Hodnotenie.js";
 
 let auth = new AuthAPI();
 document.authorization = new Register(auth);
 document.profile = new ProfileChanges(auth);
 let gameApi = new GameAPI();
 document.gameChanges = new GameChanges(gameApi);
+document.appreciation = new Hodnotenie(gameApi);
 let search = new SearchAPI();
 document.search = new SearchGames(search);

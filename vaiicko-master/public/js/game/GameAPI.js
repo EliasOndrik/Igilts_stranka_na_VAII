@@ -30,5 +30,17 @@ class GameAPI extends DataService {
         );
     }
 
+    async appreciation(value,game){
+        return await this.sendRequest(
+            "game",
+            "POST",
+            200,
+            {
+                value: value,
+                game: game
+            },
+            null
+        );
+    }
 }
 export {GameAPI}
