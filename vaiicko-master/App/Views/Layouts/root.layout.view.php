@@ -53,9 +53,9 @@
                 </li>
             </ul>
         </div>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
+            <form class="d-flex" method="post" action="<?= $link->url('search.index') ?>" enctype="multipart/form-data" role="search">
+                <input id="search-box" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+                <button class="btn btn-outline-success" type="submit" name="submit"><i class="bi bi-search"></i></button>
             </form>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <?php if ($auth?->isLogged()) { ?>

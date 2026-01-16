@@ -23,6 +23,9 @@ class GameChanges {
 
         }
         let link = document.getElementById("link");
+        if (link === null){
+            return;
+        }
         link.onkeyup = async () => {
             let url = await this.#gameService.checkUrl(link.value);
             link.className = "form-control is-valid";

@@ -92,6 +92,11 @@ class GameController extends BaseController
             if ($stareZanre != null){
                 $stareZanre[0]->delete();
             }
+            $oldFileName = $game->getObrazok();
+            $oldPath = Configuration::UPLOAD_DIR . $oldFileName;
+            if (is_file($oldPath)) {
+                @unlink($oldPath);
+            }
             $game->delete();
         }
         return $this->redirect($this->url("game.index"));
@@ -124,7 +129,7 @@ class GameController extends BaseController
             $nazov = $request->value("name");
             $autor = $request->value("author");
             $popis = $request->value("popis");
-            $zanre = array_unique( $request->value("genres"),SORT_NUMERIC);
+            $zanre = array_unique($request->hasValue("genres")?$request->value("genres"):[],SORT_NUMERIC);
 
 
             $game->setNazov($nazov);

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Hry;
 use Framework\Core\BaseController;
+use Framework\Http\HttpException;
 use Framework\Http\Request;
 use Framework\Http\Responses\Response;
 

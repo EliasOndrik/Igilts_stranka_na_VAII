@@ -1,8 +1,6 @@
 import {DataService} from "../DataService.js";
 
-/**
- * Class containing all calls to AuthApiController
- */
+
 class GameAPI extends DataService {
 
     constructor() {
