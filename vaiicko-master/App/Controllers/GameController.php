@@ -57,7 +57,7 @@ class GameController extends BaseController
                     $currentGame->setHodnotenie($currentGame->getHodnotenie() + 1);
                 }
                 $currentGame->save();
-                return $this->json(json_encode($currentGame->getLikes()/$currentGame->getHodnotenie() * 100));
+                return $this->json(json_encode([$currentGame->getLikes()/$currentGame->getHodnotenie() * 100,$currentGame->getLikes(),$currentGame->getHodnotenie()-$currentGame->getLikes()]));
             }
         }
 

@@ -40,7 +40,7 @@ use App\Models\Pouzivatelia;
             ?>
             </p>
             <p><strong>Popis: </strong> <br><?= htmlspecialchars(@$game?->getPopis()) ?></p>
-            <p>Túto hru majú radi: <strong id="hodnotenie"><?= @$game?->getHodnotenie()!=0 ? (int)(@$game?->getLikes()/@$game?->getHodnotenie() * 100):'Nan' ?> %</strong> <i id="like" class="btn btn-success bi bi-hand-thumbs-up mx-2"></i><i id="dislike" class="btn btn-danger bi bi-hand-thumbs-down mx-2"></i></p>
+            <p>Túto hru majú radi: <strong id="hodnotenie"><?= @$game?->getHodnotenie()!=0 ? (int)(@$game?->getLikes()/@$game?->getHodnotenie() * 100):'Nan' ?> %</strong> <i id="like" class="btn btn-success bi bi-hand-thumbs-up mx-2"> <?=@$game?->getLikes() ?></i><i id="dislike" class="btn btn-danger bi bi-hand-thumbs-down mx-2"> <?= @$game?->getHodnotenie()-@$game?->getLikes()?></i></p>
 
         </div>
     </div>

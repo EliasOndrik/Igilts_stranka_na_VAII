@@ -20,7 +20,10 @@ class Hodnotenie{
     async evaluation(state){
         let game = document.getElementById("secret-id").value;
         let returnValue = await this.#gameService.appreciation(state, game);
-        document.getElementById("hodnotenie").innerText = Math.floor(JSON.parse(returnValue)) + " %";
+        returnValue = JSON.parse(returnValue);
+        document.getElementById("hodnotenie").innerText = Math.floor(returnValue[0]) + " %";
+        document.getElementById("like").innerText = " "+returnValue[1];
+        document.getElementById("dislike").innerText = " "+returnValue[2];
     }
 }
 export {Hodnotenie}
