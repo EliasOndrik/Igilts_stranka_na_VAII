@@ -3,6 +3,7 @@
 /** @var App\Models\Hry $game */
 
 use App\Configuration;
+use App\Models\Admini;
 use App\Models\Komentare;
 use App\Models\Pouzivatelia;
 
@@ -14,7 +15,7 @@ use App\Models\Pouzivatelia;
         <iframe src="<?=@$game?->getLink() ?>" msallowfullscreen="true" allow="autoplay; fullscreen *; geolocation; microphone; camera; midi; monetization; xr-spatial-tracking; gamepad; gyroscope; accelerometer; xr; cross-origin-isolated; web-share" id="game_drop" allowtransparency="true" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true" scrolling="no" frameborder="0"></iframe>
     </div>
     <div class="row mt-4">
-        <?php if($this->app->getAuth()->getUser() != null && @$game->getIDNahravac() == $this->app->getAuth()->getUser()->getId()): ?>
+        <?php if($this->app->getAuth()->getUser() != null && (@$game->getIDNahravac() == $this->app->getAuth()->getUser()->getId() || Admini::isAdmin($this->app->getAuth()->getUser()->getId()))): ?>
         <div class="col mb-3 d-flex justify-content-end">
             <a href="<?= $link->url('edit', ['id' => $game->getIDHra()]) ?>" class="btn btn-primary me-2">Upraviť hru</a>
             <a href="<?= $link->url('delete', ['id' => $game->getIDHra()]) ?>" class="btn btn-danger">Zmazať hru</a>

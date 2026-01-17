@@ -85,29 +85,7 @@ class SettingController extends BaseController
         }
         if ($request->hasValue('delete')) {
             $this->app->getAuth()->logout();
-            $oldPath = Configuration::UPLOAD_DIR . $user->getObrazok();
-            if (is_file($oldPath) && strcmp( $user->getObrazok(),'defualt.png') !== 0 ) {
-                @unlink($oldPath);
-            }
-            $admin = Admini::getOne($user->getIDPouzivatel());
-            if ($admin !== null) {
-                $admin->delete();
-            }
-            $komentare = Komentare::getAll('ID_pouzivatel = ?', [$user->getIDPouzivatel()]);
-            foreach ($komentare as $komentar) {
-                $komentar->delete();
-            }
-            $hry = Hry::getAll('ID_nahravac = ?', [$user->getIDPouzivatel()]);
-            foreach ($hry as $hra) {
-                $komentarHry = Komentare::getAll("ID_hra = ?", [$hra->getIDHra()]);
-                foreach ($komentarHry as $komentarHryItem) {
-                    $komentarHryItem->delete();
-                }
-                $zanreHry = ZanreHry::getAll("ID_hra = ?", [$hra->getIDHra()]);
-                $zanreHry[0]?->delete();
-                $hra->delete();
-            }
-            $user->delete();
+            $this->deleteAccount($user);
 
             return $this->redirect($this->url("home.index"));
         }
@@ -116,6 +94,53 @@ class SettingController extends BaseController
     }
     public function account(Request $request): Response
     {
-        return $this->html();
+
+        if ($request->hasValue('remove')) {
+            $remove = $request->value('user');
+            if (Admini::isAdmin($remove)) {
+                Admini::getOne($remove)->delete();
+            }
+        }
+        if ($request->hasValue('add')) {
+            $add = $request->value('user');
+            if (Admini::isAdmin($add) === false) {
+                $admin = new Admini();
+                $admin->setIDAdmin($add);
+                $admin->save();
+            }
+
+        }
+        if ($request->hasValue('delete')) {
+            $delete = $request->value('user');
+            $this->deleteAccount(Pouzivatelia::getOne($delete));
+        }
+        $users = Pouzivatelia::getAll();
+        return $this->html(compact("users") );
+    }
+
+    private function deleteAccount($account){
+        $oldPath = Configuration::UPLOAD_DIR . $account->getObrazok();
+        if (is_file($oldPath) && strcmp($account->getObrazok(),'default.png') !== 0 ) {
+            @unlink($oldPath);
+        }
+        $admin = Admini::getOne($account->getIDPouzivatel());
+        if ($admin !== null) {
+            $admin->delete();
+        }
+        $komentare = Komentare::getAll('ID_pouzivatel = ?', [$account->getIDPouzivatel()]);
+        foreach ($komentare as $komentar) {
+            $komentar->delete();
+        }
+        $hry = Hry::getAll('ID_nahravac = ?', [$account->getIDPouzivatel()]);
+        foreach ($hry as $hra) {
+            $komentarHry = Komentare::getAll("ID_hra = ?", [$hra->getIDHra()]);
+            foreach ($komentarHry as $komentarHryItem) {
+                $komentarHryItem->delete();
+            }
+            $zanreHry = ZanreHry::getAll("ID_hra = ?", [$hra->getIDHra()]);
+            $zanreHry[0]?->delete();
+            $hra->delete();
+        }
+        $account->delete();
     }
 }

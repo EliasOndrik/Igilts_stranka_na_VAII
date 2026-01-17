@@ -6,7 +6,7 @@ use Framework\Core\Model;
 
 class Admini extends Model
 {
-    private ?int $ID_admin = null;
+    protected ?int $ID_admin = null;
 
     public function getIDAdmin(): ?int
     {
