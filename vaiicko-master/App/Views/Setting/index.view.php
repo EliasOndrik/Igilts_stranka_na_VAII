@@ -73,7 +73,7 @@ use App\Models\Pouzivatelia;
                                     <input type="file" accept=".jpg,.gif,.png" class="form-control" id="avatar" name="avatar">
                                 </div>
                                 <div class="col">
-                                    <button type="submit" class="btn btn-primary" name="imgChange">Zmeniť obrázok</button>
+                                    <button type="submit" class="btn btn-primary" name="imgChange" disabled>Zmeniť obrázok</button>
                                 </div>
                             </form>
                         </div>

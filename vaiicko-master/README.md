@@ -1,3 +1,5 @@
+# Inštalácia na konci
+
 # About
 
 This framework was created to support the teaching of the subject Development of intranet and intranet applications 
@@ -28,3 +30,15 @@ All necessary services are set in `docker-compose.yml` file. After starting them
 - The database server is available locally on the port __3306__. The default login details can be found in `.env` file.
 - Adminer is available at [http://localhost:8080/](http://localhost:8080/)
 
+
+# Inštalácia
+Je potrebné mať nainštalovaný Docker a PHPstorm. 
+Otvorite si projekt v PHPstorm a v docker priečinku spustite docker-compose.yml. 
+Pripojte sa na databázu v .env súbore. 
+V priečinku sql je SQL príkaz na vytvorenie databázy pre stránku. 
+Vedľa SQL je súbor so žánrami hier.
+V databáze sa manuálne pridávajú žánre hier a prvý admin.
+
+Ostatná komunikácia s databázou je cez stránku.
+Ak by náhodou chýbal default.png. Tak stiahnite nejaký z internetu a nazvite ho default.png.
+Nemalo by to byť komplikované, nič extra sa nespúšťa.

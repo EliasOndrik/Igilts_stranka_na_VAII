@@ -7,7 +7,7 @@ use App\Configuration;
 ?>
 <div class="container">
     <div class="row mb-4 mt-4">
-        <a class="btn btn-primary" href="<?= $link->url('add')?>">Pridaj hru</a>
+        <a class="btn btn-primary" href="<?= $link->url('add')?>">Pridať hru</a>
     </div>
     <div class="row">
         <?php foreach ($games as $game): ?>

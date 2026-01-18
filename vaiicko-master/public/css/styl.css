@@ -1,5 +1,5 @@
 .navbar {
-    border-bottom: 1px solid grey;
+    border-bottom: 2px solid #fd724e;
 }
 
 .navbar-brand img {
@@ -30,7 +30,45 @@ body {
 .card a:hover {
     color: #fabb64;
     text-decoration: none;
+    background-color: #a02f40;
 }
 h2, h1{
     color: #f5ddbc;
+}
+.game-comment, .game-info {
+    border: 2px solid #a02f40;
+}
+.btn-search {
+    color: #fabb64;
+    border: 1px solid #fabb64;
+}
+.btn-search:hover {
+    background-color: #fd724e;
+}
+.nav-link:hover {
+    color: #fabb64;
+}
+.nav-link {
+    color: #f5ddbc;
+}
+.dropdown-menu {
+    background-color: #5f2f45;
+}
+.dropdown-item:hover {
+    background-color: #a02f40;
+    color: #fabb64;
+}
+.dropdown-item {
+    color: #f5ddbc;
+}
+label {
+    color: #f5ddbc;
+}
+.btn-genre {
+    background-color: #a02f40;
+    color: #f5ddbc;
+}
+.btn-genre:hover {
+    background-color: #a02f40;
+    color: #fabb64;
 }

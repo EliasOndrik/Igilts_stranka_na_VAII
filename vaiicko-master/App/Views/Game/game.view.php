@@ -23,7 +23,7 @@ use App\Models\Pouzivatelia;
         <?php endif;
         ?>
     </div>
-    <div class="row  border border-secondary rounded py-2">
+    <div class="row game-info rounded py-2">
         <div class="col-md-4">
             <img src="<?= $link->asset(Configuration::UPLOAD_URL . @$game?->getObrazok()) ?>" class="img-fluid" alt="Obrázok hry" width="100%">
         </div>
@@ -62,7 +62,7 @@ use App\Models\Pouzivatelia;
         </div>
         <?php foreach (array_reverse(Komentare::getCommentsByGame(@$game->getIDHra())) as $comment): ?>
         <?php $uploader = Pouzivatelia::getOne($comment->getIDPouzivatel()); ?>
-        <div class="col-12 border rounded mb-3 p-2">
+        <div class="col-12 game-comment rounded mb-3 p-2">
             <div class="row">
                 <div class="col-2 ">
                     <img src="<?= $link->asset(Configuration::UPLOAD_URL . $uploader->getObrazok()) ?>" class="img-fluid profile" alt="Avatar používateľa" width="100%">

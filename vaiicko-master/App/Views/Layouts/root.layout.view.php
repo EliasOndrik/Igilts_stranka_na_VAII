@@ -3,6 +3,9 @@
 /** @var string $contentHTML */
 /** @var \Framework\Core\IAuthenticator $auth */
 /** @var \Framework\Support\LinkGenerator $link */
+
+use App\Models\Admini;
+
 ?>
 <!DOCTYPE html>
 <html lang="sk">
@@ -24,7 +27,7 @@
     <script src="<?= $link->asset('js/script.js') ?>" type="module"></script>
 </head>
 <body data-bs-theme="dark">
-<nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+<nav class="navbar navbar-expand-lg ">
     <div class="container-fluid">
         <a class="navbar-brand" href="<?= $link->url('home.index') ?>">
             <img src="<?= $link->asset('images/logo.jpg') ?>" title="<?= App\Configuration::APP_NAME ?>" alt="Logo">
@@ -55,11 +58,16 @@
         </div>
             <form class="d-flex" method="post" action="<?= $link->url('search.index') ?>" enctype="multipart/form-data" role="search">
                 <input id="search-box" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
-                <button class="btn btn-outline-success" type="submit" name="submit"><i class="bi bi-search"></i></button>
+                <button class="btn btn-search" type="submit" name="submit"><i class="bi bi-search"></i></button>
             </form>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <?php if ($auth?->isLogged()) { ?>
                 <ul class="navbar-nav ms-auto">
+                    <?php if (Admini::isAdmin($this->app->getAuth()->getUser()->getId())):?>
+                    <li>
+                        <a class="nav-link" href="<?= $link->url('setting.account') ?>">Účty</a>
+                    </li>
+                    <?php endif; ?>
                     <li>
                         <div class="navbar-text"><b><?= $auth?->user?->name ?></b></div>
                     </li>

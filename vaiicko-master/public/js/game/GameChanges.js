@@ -39,7 +39,7 @@ class GameChanges {
     }
     addZaner(zaner,id) {
         let container = document.getElementById("genre-container");
-        container.innerHTML += "<span class='btn bg-secondary m-1' onclick='document.gameChanges.removeZaner(this)'>" + zaner + "<input type='hidden' name='genres[]' value='"+id+"'/></span>";
+        container.innerHTML += "<span class='btn btn-genre m-1' onclick='document.gameChanges.removeZaner(this)'>" + zaner + "<input type='hidden' name='genres[]' value='"+id+"'/></span>";
     }
     removeZaner(element) {
         element.remove();
